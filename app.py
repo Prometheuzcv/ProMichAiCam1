@@ -20,32 +20,32 @@ state = dict(ready=False, error=None, fps=0, frames=0, inference_frames=0,
 
 PAGE = '''<!doctype html><html lang="cs"><meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
-<title>ProMichAiCam1 � AI kamera</title><style>
+<title>ProMichAiCam1 — AI kamera</title><style>
 body{margin:0;background:#101820;color:#e8f0f5;font:16px system-ui,sans-serif}
 main{max-width:1100px;margin:auto;padding:24px}h1{font-size:26px;margin:0 0 8px}
 p{color:#b8cad5}img{width:100%;background:#050a0e;border-radius:12px;min-height:180px}
 #status{padding:12px 0}#objects{display:flex;gap:8px;flex-wrap:wrap}
 .tag{background:#203948;padding:8px 12px;border-radius:8px}
-</style><main><h1>ProMichAiCam1 � AI kamera</h1>
-<p>Sony IMX500 � detekce objekt� � n�hled p�es SSH tunel</p>
-<div id="status">�ek�m na na�ten� kamery a modelu�</div>
-<img src="/stream.mjpg" alt="�iv� obraz s detekc� objekt�">
-<h2>Rozpoznan� objekty</h2><div id="objects"></div>
-<p>Jm�na osob zat�m nerozpozn�v�me. Obraz se neukl�d�.</p></main>
+</style><main><h1>ProMichAiCam1 · AI kamera</h1>
+<p>Sony IMX500 · detekce objektů · náhled přes SSH tunel</p>
+<div id="status">Čekám na načtení kamery a modelu…</div>
+<img src="/stream.mjpg" alt="Živý obraz s detekcí objektů">
+<h2>Rozpoznané objekty</h2><div id="objects"></div>
+<p>Jména osob zatím nerozpoznáváme. Obraz se neukládá.</p></main>
 <script>
-const names={person:'�lov�k',car:'Auto',dog:'Pes',cat:'Ko�ka',bird:'Pt�k',
-bicycle:'J�zdn� kolo',motorcycle:'Motocykl',bus:'Autobus',truck:'N�kladn� auto',
-chair:'�idle',bottle:'L�hev',cup:'Hrnek','cell phone':'Telefon',tv:'Televize',
+const names={person:'Člověk',car:'Auto',dog:'Pes',cat:'Kočka',bird:'Pták',
+bicycle:'Jízdní kolo',motorcycle:'Motocykl',bus:'Autobus',truck:'Nákladní auto',
+chair:'Židle',bottle:'Láhev',cup:'Hrnek','cell phone':'Telefon',tv:'Televize',
 laptop:'Notebook',book:'Kniha'};
 async function update(){try{const s=await(await fetch('/status',{cache:'no-store'})).json();
 document.querySelector('#status').textContent=s.error?'Chyba: '+s.error:
-s.ready?`�iv� � ${s.fps.toFixed(1)} sn�mk�/s � ${s.inference_frames} v�sledk� AI`:
-'Na��t�m firmware a model do kamery. Prvn� spu�t�n� m��e trvat n�kolik minut�';
+s.ready?`Živě · ${s.fps.toFixed(1)} snímků/s · ${s.inference_frames} výsledků AI`:
+'Načítám firmware a model do kamery. První spuštění může trvat několik minut…';
 const list=document.querySelector('#objects');list.replaceChildren();
 for(const d of s.detections){const e=document.createElement('span');e.className='tag';
-e.textContent=`${names[d.label]||d.label} � ${Math.round(d.confidence*100)} %`;list.append(e)}
-if(!s.detections.length)list.textContent='��dn� objekt nad prahem jistoty 55 %.';
-}catch(e){document.querySelector('#status').textContent='Spojen� se obnovuje�'}}
+e.textContent=`${names[d.label]||d.label} · ${Math.round(d.confidence*100)} %`;list.append(e)}
+if(!s.detections.length)list.textContent='Žádný objekt nad prahem jistoty 55 %.';
+}catch(e){document.querySelector('#status').textContent='Spojení se obnovuje…'}}
 setInterval(update,1000);update();</script></html>'''
 
 
@@ -56,11 +56,11 @@ def camera_worker():
         imx = IMX500(MODEL)
         intrinsic = imx.network_intrinsics
         if intrinsic is None or intrinsic.task != 'object detection':
-            raise RuntimeError('Model neobsahuje konfiguraci detekce objekt�')
+            raise RuntimeError('Model neobsahuje konfiguraci detekce objektů')
         intrinsic.update_with_defaults()
         labels = intrinsic.labels
         if not labels:
-            raise RuntimeError('Model neobsahuje seznam kategori�')
+            raise RuntimeError('Model neobsahuje seznam kategorií')
         if intrinsic.ignore_dash_labels:
             labels = [label for label in labels if label and label != '-']
         camera = Picamera2(imx.camera_num)

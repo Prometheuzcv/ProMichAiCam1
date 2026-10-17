@@ -1,32 +1,32 @@
 # ProMichAiCam1
 
-AI kamera se Sony IMX500 na Raspberry Pi. Tento repozit�� obsahuje zdrojov� k�d a p�ed�vac� stav projektu pro pokra�ov�n� z r�zn�ch po��ta�� a aplikac�.
+AI kamera se Sony IMX500 na Raspberry Pi. Tento repozitář obsahuje zdrojový kód a předávací stav projektu pro pokračování z různých počítačů a aplikací.
 
-## Za�ni zde
+## Začni zde
 
-1. P�e�ti [STAV_PROJEKTU.md](STAV_PROJEKTU.md): datum posledn�ho ov��en�, skute�n� stav a zb�vaj�c� pr�ce.
-2. P�e�ti [AGENTS.md](AGENTS.md): pravidla pr�ce a aktualizace p�ed�n�.
-3. Pro pr�ci se za��zen�m pou�ij [n�vod k p�ipojen�](docs/PRIPOJENI.md). Schv�len� po��ta� pot�ebuje vlastn� p��stup do p��slu�n� s�t� a SSH autorizaci.
-4. Po dokon�en� pr�ce aktualizuj stav, ulo� zm�ny do Gitu a ov�� jejich dostupnost na GitHubu.
+1. Přečti [STAV_PROJEKTU.md](STAV_PROJEKTU.md): datum posledního ověření, skutečný stav a zbývající práce.
+2. Přečti [AGENTS.md](AGENTS.md): pravidla práce a aktualizace předání.
+3. Pro práci se zařízením použij [návod k připojení](docs/PRIPOJENI.md). Schválený počítač potřebuje vlastní přístup do příslušné sítě a SSH autorizaci.
+4. Po dokončení práce aktualizuj stav, ulož změny do Gitu a ověř jejich dostupnost na GitHubu.
 
 ## Obsah
 
-| Soubor | ��el |
+| Soubor | Účel |
 |---|---|
-| `app.py` | Python aplikace: kamera, inference, detek�n� r�me�ky, HTTP n�hled |
-| `deploy/ai-camera.service` | Definice u�ivatelsk� systemd slu�by |
-| `STAV_PROJEKTU.md` | Posledn� ov��en� stav a dal�� pr�ce |
-| `AGENTS.md` | Pokyny pro asistenta p�i nav�z�n� |
-| `docs/PRIPOJENI.md` | P�ipojen� p�es m�stn� SSH alias bez zve�ejn�n� adres �i kl��� |
-| `docs/PROVOZ.md` | Provozn� parametry a z�vislosti |
-| `docs/PUVOD.md` | P�vod zdroje a kontroln� sou�ty |
+| `app.py` | Python aplikace: kamera, inference, detekční rámečky, HTTP náhled |
+| `deploy/ai-camera.service` | Definice uživatelské systemd služby |
+| `STAV_PROJEKTU.md` | Poslední ověřený stav a další práce |
+| `AGENTS.md` | Pokyny pro asistenta při navázání |
+| `docs/PRIPOJENI.md` | Připojení přes místní SSH alias bez zveřejnění adres či klíčů |
+| `docs/PROVOZ.md` | Provozní parametry a závislosti |
+| `docs/PUVOD.md` | Původ zdroje a kontrolní součty |
 
-## Nav�z�n� v nov�m chatu
+## Navázání v novém chatu
 
-Zkop�ruj odkaz na tento repozit�� a napi�:
+Zkopíruj odkaz na tento repozitář a napiš:
 
-> Pokra�ujeme v projektu ProMichAiCam1 podle tohoto repozit��e. P�e�ti README.md, STAV_PROJEKTU.md a AGENTS.md. Nejd��v ov�� dostupnost projektu a p��padn�ho za��zen�. �ekni, kter� stav je dolo�en� a co z�st�v� neov��en�.
+> Pokračujeme v projektu ProMichAiCam1 podle tohoto repozitáře. Přečti README.md, STAV_PROJEKTU.md a AGENTS.md. Nejdřív ověř dostupnost projektu a případného zařízení. Řekni, který stav je doložený a co zůstává neověřené.
 
-Ve�ejn� dostupnost repozit��e umo��uje jeho �ten� bez GitHub p�ihl�en� prost�ednictv�m dostupn�ho webov�ho nebo Git n�stroje. Z�pis zm�n vy�aduje opr�vn�n�. P��stup k za��zen� je samostatn� a cloudov� chat ho nemus� m�t.
+Veřejná dostupnost repozitáře umožňuje jeho čtení bez GitHub přihlášení prostřednictvím dostupného webového nebo Git nástroje. Zápis změn vyžaduje oprávnění. Přístup k zařízení je samostatný a cloudový chat ho nemusí mít.
 
-Hesla, soukrom� kl��e, s�ov� adresy konkr�tn� instalace a �pln� provozn� v�pisy pat�� mimo tento ve�ejn� repozit��.
+Hesla, soukromé klíče, síťové adresy konkrétní instalace a úplné provozní výpisy patří mimo tento veřejný repozitář.

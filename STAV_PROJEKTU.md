@@ -1,36 +1,36 @@
 # Stav projektu ProMichAiCam1
 
-Posledn� �iv� ov��en�: **17. 10. 2026, p�ibli�n� 14:12 Europe/Berlin**. Tento soubor je �asov� z�znam; sou�asn� stav za��zen� je p�ed dal�� prac� pot�eba znovu ov��it.
+Poslední živé ověření: **17. 10. 2026, přibližně 14:12 Europe/Berlin**. Tento soubor je časový záznam; současný stav zařízení je před další prací potřeba znovu ověřit.
 
-## Ov��eno p��m�m �ten�m za��zen�
+## Ověřeno přímým čtením zařízení
 
-- Raspberry Pi 4 Model B Rev 1.5, Debian GNU/Linux 13 (trixie), 64bitov� syst�m.
-- Kamera IMX500 je p��tomn� v syst�mov� evidenci I2C.
-- Aplikace a u�ivatelsk� slu�ba byly z�sk�ny ze za��zen�. Zdroj aplikace se shoduje SHA256 s origin�lem; u ve�ejn� kopie slu�by byly pouze sjednoceny konce ��dk� na LF. P�vodn� otisky jsou v `docs/PUVOD.md`.
-- Model SSD MobileNetV2 FPNLite 320 � 320 je instalovan�.
+- Raspberry Pi 4 Model B Rev 1.5, Debian GNU/Linux 13 (trixie), 64bitový systém.
+- Kamera IMX500 je přítomná v systémové evidenci I2C.
+- Aplikace a uživatelská služba byly získány ze zařízení. Zdroj aplikace se shoduje SHA256 s originálem; u veřejné kopie služby byly pouze sjednoceny konce řádků na LF. Původní otisky jsou v `docs/PUVOD.md`.
+- Model SSD MobileNetV2 FPNLite 320 × 320 je instalovaný.
 - `ai-camera.service` byla **inactive/dead**, `MainPID=0`, `UnitFileState=enabled`.
-- Aplikace p�i kontrole neposlouchala na portu 8080. Kamera ani slu�ba nebyly p�i �ten� spu�t�ny.
-- K�d pro�el kontrolou syntaxe bez spu�t�n� kamery.
+- Aplikace při kontrole neposlouchala na portu 8080. Kamera ani služba nebyly při čtení spuštěny.
+- Kód prošel kontrolou syntaxe bez spuštění kamery.
 
-## Sou�asn� obsah k�du
+## Současný obsah kódu
 
-- N�hled 960 � 720, po�adovan�ch 15 FPS, detek�n� pr�h 55 %.
-- Kreslen� r�me�k�, kategorie a jistoty rozpozn�n�; �esk� popisky vybran�ch kategori� v HTML.
-- HTTP pouze na loopback rozhran� za��zen�, port 8080; p��stup pomoc� SSH p�esm�rov�n�.
-- Identifikace osob jm�nem ani ukl�d�n� obrazu na disk nejsou implementovan�.
+- Náhled 960 × 720, požadovaných 15 FPS, detekční práh 55 %.
+- Kreslení rámečků, kategorie a jistoty rozpoznání; české popisky vybraných kategorií v HTML.
+- HTTP pouze na loopback rozhraní zařízení, port 8080; přístup pomocí SSH přesměrování.
+- Identifikace osob jménem ani ukládání obrazu na disk nejsou implementované.
 
-## Dosud neov��eno
+## Dosud neověřeno
 
-- Pozitivn� �iv� detekce s r�me�kem.
-- Skute�n� FPS, kvalita �iv�ho obrazu a chov�n� p�i del��m b�hu.
-- P�vodn� �pln� historie chatu a jeho p�ed�vac� pozn�mka.
-- P�vodn� �pravy WireGuardu na jin�m po��ta�i.
-- Dostupnost projektu z dal��ho u�ivatelova ��tu/aplikace se ov��uje samostatn�; nelze ji p�edpokl�dat.
+- Pozitivní živá detekce s rámečkem.
+- Skutečné FPS, kvalita živého obrazu a chování při delším běhu.
+- Původní úplná historie chatu a jeho předávací poznámka.
+- Původní úpravy WireGuardu na jiném počítači.
+- Dostupnost projektu z dalšího uživatelova účtu/aplikace se ověřuje samostatně; nelze ji předpokládat.
 
-## Nav�z�n�
+## Navázání
 
-Nejd��v zkontrolovat aktu�ln� opr�vn�n�, Git stav a dostupnost za��zen� podle `docs/PRIPOJENI.md`. Funk�n� ov��en� n�hledu a detekce znamen� spu�t�n� kamery; prov�st ho v rozsahu u�ivatelova aktu�ln�ho zad�n�. Samotn� obnoven� dokumentace nen� d�kazem �iv� funk�nosti.
+Nejdřív zkontrolovat aktuální oprávnění, Git stav a dostupnost zařízení podle `docs/PRIPOJENI.md`. Funkční ověření náhledu a detekce znamená spuštění kamery; provést ho v rozsahu uživatelova aktuálního zadání. Samotné obnovení dokumentace není důkazem živé funkčnosti.
 
-## Pravidlo p�ed�n�
+## Pravidlo předání
 
-Po ka�d� dokon�en� pr�ci uv�st datum, posledn� zm�nu, zp�sob ov��en�, stav slu�by p�i ukon�en� a zb�vaj�c� �koly. P�idat odkaz na commit, pokud je zn�m. Neuchov�vat novou autoritativn� verzi pouze v chatu.
+Po každé dokončené práci uvést datum, poslední změnu, způsob ověření, stav služby při ukončení a zbývající úkoly. Přidat odkaz na commit, pokud je znám. Neuchovávat novou autoritativní verzi pouze v chatu.

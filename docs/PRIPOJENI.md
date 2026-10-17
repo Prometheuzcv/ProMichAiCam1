@@ -1,35 +1,35 @@
-# P�ipojen� k za��zen�
+# Připojení k zařízení
 
-Tento dokument neobsahuje adresy konkr�tn� soukrom� s�t�, u�ivatelsk� hesla ani kl��e. Ty z�st�vaj� v konfiguraci schv�len�ch po��ta��.
+Tento dokument neobsahuje adresy konkrétní soukromé sítě, uživatelská hesla ani klíče. Ty zůstávají v konfiguraci schválených počítačů.
 
-## �ten� projektu
+## Čtení projektu
 
-Ve�ejn� repozit�� lze ��st webov�m/Git n�strojem nebo st�hnout jako ZIP. Soukrom� ��et �i aplikace pot�ebuje pro z�pis vlastn� GitHub opr�vn�n�. Automatickou dostupnost konektoru v jin�m ��tu nep�edpokl�dat.
+Veřejný repozitář lze číst webovým/Git nástrojem nebo stáhnout jako ZIP. Soukromý účet či aplikace potřebuje pro zápis vlastní GitHub oprávnění. Automatickou dostupnost konektoru v jiném účtu nepředpokládat.
 
-## P��stup k Raspberry
+## Přístup k Raspberry
 
-Na p�ipraven�m m�stn�m po��ta�i nebo st�l�m MiniPC je c�lov�m rozhran�m alias:
+Na připraveném místním počítači nebo stálém MiniPC je cílovým rozhraním alias:
 
 ```sh
 ssh promich-camera
 ```
 
-Alias nen� ve�ejn� slu�ba ani univerz�ln� p�ihla�ovac� �daj. Funguje pouze tam, kde vlastn�k nakonfiguroval cestu k za��zen�, individu�ln� SSH kl�� a ov��en� kl�� serveru. Ka�d� nov� po��ta� vy�aduje vlastn� autorizaci.
+Alias není veřejná služba ani univerzální přihlašovací údaj. Funguje pouze tam, kde vlastník nakonfiguroval cestu k zařízení, individuální SSH klíč a ověřený klíč serveru. Každý nový počítač vyžaduje vlastní autorizaci.
 
-Nejprve ov��it identitu a stav, nap��klad:
+Nejprve ověřit identitu a stav, například:
 
 ```sh
 ssh promich-camera 'hostname; systemctl --user is-active ai-camera.service'
 ```
 
-N�hled aplikace je ur�en� pro loopback za��zen� na portu 8080. Po v�slovn� zadan�m spu�t�n� kamery lze ze schv�len�ho m�stn�ho po��ta�e pou��t:
+Náhled aplikace je určený pro loopback zařízení na portu 8080. Po výslovně zadaném spuštění kamery lze ze schváleného místního počítače použít:
 
 ```sh
 ssh -N -L 127.0.0.1:8088:127.0.0.1:8080 promich-camera
 ```
 
-Potom se n�hled otev�r� lok�ln� na `http://127.0.0.1:8088/`. Samotn� p�esm�rov�n� aplikaci nespust�.
+Potom se náhled otevírá lokálně na `http://127.0.0.1:8088/`. Samotné přesměrování aplikaci nespustí.
 
-## Kdy� p�ipojen� chyb�
+## Když připojení chybí
 
-Ov��it nejprve mo�nosti prost�ed� a jeho p��stup do s�t�. Znovu neprohled�vat n�hodn� star� chaty. Vlastn�k za��zen� rozhoduje o autorizaci dal��ho po��ta�e; p�ihla�ovac� �daje se nevkl�daj� do chatu ani Gitu.
+Ověřit nejprve možnosti prostředí a jeho přístup do sítě. Znovu neprohledávat náhodně staré chaty. Vlastník zařízení rozhoduje o autorizaci dalšího počítače; přihlašovací údaje se nevkládají do chatu ani Gitu.

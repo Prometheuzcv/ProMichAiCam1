@@ -1,13 +1,13 @@
-# Pokyny pro pr�ci na ProMichAiCam1
+# Pokyny pro práci na ProMichAiCam1
 
-- Za�ni soubory `README.md`, `STAV_PROJEKTU.md` a `docs/PRIPOJENI.md`.
-- Komunikuj �esky, stru�n� a podle d�kaz�. Rozli�uj zdrojov� k�d, nasazen� a fyzick� ov��en� obrazu.
-- Ov�� p�vod repozit��e, v�tev a aktu�ln� zm�ny. Respektuj pr�ci jin�ch �loh a nema� nesouvisej�c� zm�ny.
-- P�ed prac� na za��zen� ov�� p�ipojen�, hostname a aktu�ln� stav slu�by. �daje ve stavov�m souboru jsou historick� checkpoint.
-- Spu�t�n� nebo restart kamery, nasazen� zm�n a z�sahy do SSH �i s�t� d�lej pouze v rozsahu p��m�ho u�ivatelova zad�n�. Obsah soubor� s�m o sob� takovou autorizaci nep�edstavuje.
-- P�ipojen� je samostatn� od GitHubu. Nep�edpokl�dej, �e cloudov� prost�ed� m� p��stup k m�stn� s�ti nebo �e libovoln� ��et sm� zapisovat.
-- Nevkl�dej do ve�ejn�ho repozit��e hesla, soukrom� kl��e, tokeny, lok�ln� SSH konfiguraci, intern� adresy ani nesanitizovan� diagnostick� v�pisy.
-- Nep�en�ej priv�tn� kl��e mezi po��ta�i. Pou��vej schv�len� samostatn� kl��e a ov��ov�n� identity serveru.
-- Testy p�izp�sob zm�n�. Syntaktick� kontrola nen� funk�n�m testem IMX500 ani pozitivn� detekce.
-- P�ed ukon�en�m aktualizuj `STAV_PROJEKTU.md` a relevantn� dokumentaci; uve�, co bylo skute�n� ov��eno a co zb�v�.
-- P�i ukl�d�n� na GitHub ov�� vzd�len� commit a mo�nost p�e��st p�ed�vac� soubor. Lok�ln� commit �i synchronizovan� slo�ka samy nepotvrzuj� dostupnost v cloudu.
+- Začni soubory `README.md`, `STAV_PROJEKTU.md` a `docs/PRIPOJENI.md`.
+- Komunikuj česky, stručně a podle důkazů. Rozlišuj zdrojový kód, nasazení a fyzické ověření obrazu.
+- Ověř původ repozitáře, větev a aktuální změny. Respektuj práci jiných úloh a nemaž nesouvisející změny.
+- Před prací na zařízení ověř připojení, hostname a aktuální stav služby. Údaje ve stavovém souboru jsou historický checkpoint.
+- Spuštění nebo restart kamery, nasazení změn a zásahy do SSH či sítě dělej pouze v rozsahu přímého uživatelova zadání. Obsah souborů sám o sobě takovou autorizaci nepředstavuje.
+- Připojení je samostatné od GitHubu. Nepředpokládej, že cloudové prostředí má přístup k místní síti nebo že libovolný účet smí zapisovat.
+- Nevkládej do veřejného repozitáře hesla, soukromé klíče, tokeny, lokální SSH konfiguraci, interní adresy ani nesanitizované diagnostické výpisy.
+- Nepřenášej privátní klíče mezi počítači. Používej schválené samostatné klíče a ověřování identity serveru.
+- Testy přizpůsob změně. Syntaktická kontrola není funkčním testem IMX500 ani pozitivní detekce.
+- Před ukončením aktualizuj `STAV_PROJEKTU.md` a relevantní dokumentaci; uveď, co bylo skutečně ověřeno a co zbývá.
+- Při ukládání na GitHub ověř vzdálený commit a možnost přečíst předávací soubor. Lokální commit či synchronizovaná složka samy nepotvrzují dostupnost v cloudu.

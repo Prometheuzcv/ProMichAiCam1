@@ -1,10 +1,10 @@
-# Provoz a z�vislosti
+# Provoz a závislosti
 
-Zdrojov� program je `app.py`. P�i aktu�ln� zji�t�n�m uspo��d�n� je na za��zen� v adres��i `~/ai-camera/app.py`. Jednotka `deploy/ai-camera.service` pou��v� tento adres�� relativn� k domovu p�ihl�en�ho u�ivatele.
+Zdrojový program je `app.py`. Při aktuálně zjištěném uspořádání je na zařízení v adresáři `~/ai-camera/app.py`. Jednotka `deploy/ai-camera.service` používá tento adresář relativně k domovu přihlášeného uživatele.
 
-## Z�vislosti zji�t�n� p�i obnov� 17. 10. 2026
+## Závislosti zjištěné při obnově 17. 10. 2026
 
-| Bal��ek | Zji�t�n� verze |
+| Balíček | Zjištěná verze |
 |---|---|
 | `imx500-all` | `1.14.0-1` |
 | `imx500-models` | `1:1.0.0-1` |
@@ -12,27 +12,27 @@ Zdrojov� program je `app.py`. P�i aktu�ln� zji�t�n�m uspo��d�
 | `python3-picamera2` | `0.3.37-1` |
 | `rpicam-apps` | `1.14.0-1` |
 
-Jde o bal��ky instalovan� v tehdej��m syst�mu za��zen�; tento seznam nen� tvrzen�m o aktu�ln�ch nejnov�j��ch verz�ch ani samostatn�m instala�n�m skriptem. Picamera2 a IMX500 pot�ebuj� kompatibiln� syst�mov� knihovny a hardware.
+Jde o balíčky instalované v tehdejším systému zařízení; tento seznam není tvrzením o aktuálních nejnovějších verzích ani samostatným instalačním skriptem. Picamera2 a IMX500 potřebují kompatibilní systémové knihovny a hardware.
 
 ## Model a parametry
 
-Model o�ek�van� aplikac�:
+Model očekávaný aplikací:
 
 ```text
 /usr/share/imx500-models/imx500_network_ssd_mobilenetv2_fpnlite_320x320_pp.rpk
 ```
 
-N�hled: 960 � 720, RGB888, po�adavek 15 FPS, �est buffer�, JPEG kvalita 80. Detek�n� pr�h 0.55, nejv��e 1.5 sekundy star� posledn� v�sledek AI. �t�tky a p�evod sou�adnic vych�zej� z intrinsics modelu.
+Náhled: 960 × 720, RGB888, požadavek 15 FPS, šest bufferů, JPEG kvalita 80. Detekční práh 0.55, nejvýše 1.5 sekundy starý poslední výsledek AI. Štítky a převod souřadnic vycházejí z intrinsics modelu.
 
 ## HTTP cesty
 
-- `/`: HTML n�hled.
+- `/`: HTML náhled.
 - `/status`: stav aplikace v JSON.
-- `/snapshot.jpg`: aktu�ln� JPEG, pokud je sn�mek dostupn�.
+- `/snapshot.jpg`: aktuální JPEG, pokud je snímek dostupný.
 - `/stream.mjpg`: MJPEG stream.
 
-Server poslouch� pouze na `127.0.0.1:8080`. Webov� server se spou�t� spole�n� s kamerov�m vl�knem. Spu�t�n� `app.py` tedy znamen� spu�t�n� kamery.
+Server poslouchá pouze na `127.0.0.1:8080`. Webový server se spouští společně s kamerovým vláknem. Spuštění `app.py` tedy znamená spuštění kamery.
 
-## Slu�ba
+## Služba
 
-U�ivatelsk� systemd jednotka `ai-camera.service`, `Restart=on-failure`, prodleva 5 sekund. P�i obnov� byla povolen�, ale neaktivn�. Stav `enabled` s�m o sob� nepotvrzuje b��c� kameru.
+Uživatelská systemd jednotka `ai-camera.service`, `Restart=on-failure`, prodleva 5 sekund. Při obnově byla povolená, ale neaktivní. Stav `enabled` sám o sobě nepotvrzuje běžící kameru.
