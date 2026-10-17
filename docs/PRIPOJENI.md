@@ -16,6 +16,8 @@ ssh promich-camera
 
 Alias není veřejná služba ani univerzální přihlašovací údaj. Funguje pouze tam, kde vlastník nakonfiguroval cestu k zařízení, individuální SSH klíč a ověřený klíč serveru. Každý nový počítač vyžaduje vlastní autorizaci.
 
+K 17. 10. 2026 přibližně 14:44 Europe/Berlin bylo ověřeno samostatné spojení bez hesla z vlastníkovy připravené pracovní stanice i ze stálého místního počítače. Používají rozdílné klíče a kontrolují identitu serveru. Tato připojení nepotřebují původní dočasnou přihlašovací relaci. Nový počítač nebo jiná cloudová aplikace tím automaticky autorizované nejsou.
+
 Nejprve ověřit identitu a stav, například:
 
 ```sh
