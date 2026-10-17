@@ -1,0 +1,13 @@
+[Unit]
+Description=ProMichAiCam1 IMX500 object detection preview
+After=network.target
+
+[Service]
+Type=simple
+WorkingDirectory=%h/ai-camera
+ExecStart=/usr/bin/python3 -u %h/ai-camera/app.py
+Restart=on-failure
+RestartSec=5
+
+[Install]
+WantedBy=default.target
