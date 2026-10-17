@@ -52,6 +52,14 @@ Nejdřív zkontrolovat aktuální oprávnění, Git stav a dostupnost zařízen�
 - Připojování k libovolným otevřeným sítím není nastavené. VPN klient na Raspberry a vzdálený přístup přes mobilní hotspot dosud nejsou nastavené ani ověřené.
 - Kamerová služba zůstává neaktivní; kamera nebyla spuštěna.
 
+## GPIO displej 3,5 palce — diagnostika 17. 10. 2026
+
+- Uživatel připojil displej označený 3.5inch RPi Display, 480 × 320, XPT2046; hlásí bílé podsvícení. Provedení odpovídá rodině MPI3501/ILI9486.
+- Přímá kontrola zjistila vypnuté SPI v device tree a chybějící overlay displeje v bootovací konfiguraci. Labwc má pouze virtuální výstup NOOP; fyzický SPI displej není registrovaný.
+- Systém již obsahuje moduly DRM ILI9486, ADS7846 a overlay piscreen s volbou drm. Připravená lokální oprava přidá dtparam=spi=on a dtoverlay=piscreen,drm,speed=16000000,rotate=0; původní konfiguraci zálohuje a zachová ostatní nastavení.
+- Oprava zatím nebyla zapsána do zařízení: vyžaduje místní zadání hesla pro sudo. Následně je potřeba restart a ověření registrace displeje, skutečného obrazu a dotyku.
+- Po posledním startu zařízení je kamerová služba aktivní, MainPID při kontrole 1347, aktivní od 15:00:20 Europe/Berlin. Diagnostika službu nespouštěla ani nezastavovala; dřívější záznam inactive je historický.
+
 ## Pravidlo předání
 
 Po každé dokončené práci uvést datum, poslední změnu, způsob ověření, stav služby při ukončení a zbývající úkoly. Přidat odkaz na commit, pokud je znám. Neuchovávat novou autoritativní verzi pouze v chatu.
