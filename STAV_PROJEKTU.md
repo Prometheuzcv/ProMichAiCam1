@@ -21,8 +21,7 @@ Poslední živé ověření připojení, zdroje aplikace a stavu služby: **17. 
 
 ## Dosud neověřeno
 
-- Pozitivní živá detekce s rámečkem.
-- Skutečné FPS, kvalita živého obrazu a chování při delším běhu.
+- Chování při dlouhodobém běhu a fyzická přesnost dotyku. Pozitivní detekce a krátký živý běh byly ověřené při pozdějším nastavení kiosku, viz níže.
 - Původní úplná historie chatu a jeho předávací poznámka.
 - Původní úpravy WireGuardu na jiném počítači.
 - Dostupnost projektu z dalšího uživatelova účtu/aplikace se ověřuje samostatně; nelze ji předpokládat.
@@ -60,6 +59,16 @@ Nejdřív zkontrolovat aktuální oprávnění, Git stav a dostupnost zařízen�
 - **Oprava je nasazená a obraz je fyzicky potvrzený uživatelem.** Po startu v 15:11:03 systém při kontrole přibližně v 15:20 Europe/Berlin registruje SPI-1 jako připojený a zapnutý výstup 480 × 320. Labwc zobrazuje plochu na tomto výstupu.
 - Dotykový řadič je registrovaný jako ADS7846 Touchscreen na spi0.1. Fyzická funkce a přesnost dotyku zatím nebyly potvrzené.
 - Kamerová služba po restartu běží, MainPID při kontrole 1376. Diagnostické čtení ji nespouštělo ani nezastavovalo; dřívější záznam inactive je historický.
+
+## Automatický živý obraz s detekcí — ověřeno 17. 10. 2026 po restartu v 15:30 Europe/Berlin
+
+- Po úplném restartu se automaticky spustily `ai-camera.service` (15:30:21) a `ai-camera-display.service` (15:30:27), bez ručního otevření okna. Kontrola výstupu SPI-1 po startu potvrdila skutečný obraz kamery přes celou plochu 480 × 320 a stav AI.
+- Nová stránka `/display` používá stávající MJPEG s detekčními rámečky, zachovává poměr stran a obnovuje spojení při výpadku. Prohlížeč čeká na místní server; stránka zobrazuje načítání modelu nebo chybu. Prohlížeč má samostatný profil, bez překladových bublin a výzvy ke klíčence. Pro běžné zobrazení není potřeba dotyk ani internet.
+- Byla ověřena pozitivní živá detekce `person` s jistotou 0.68 a souřadnicemi rámečku; snímek výstupu displeje při dalším měření obsahoval rámečky a popisky. Počet výsledků inference i obrazových snímků rostl. Počáteční průměrné FPS po startu zahrnuje dobu načítání; není to měření dlouhodobé obnovovací frekvence panelu.
+- Funkční HTTP test pokryl původní stránku, novou stránku, stav a MJPEG s query stringem pro opakované připojení. Na zařízení prošel také restart kamerové služby: kamera se znovu připravila a kiosk zůstal běžet. Poté prošel úplný restart Raspberry a nové SSH připojení; domácí Wi-Fi byla znovu připojená.
+- Dotyk při 35sekundovém záznamu poskytl 22 stisků a 22 uvolnění, souřadnice i tlak. Byl opraven uživatelský profil labwc: chyběla prázdná vazba `Root / Left / Press`, kterou používá systémová konfigurace Raspberry Pi. Tím se odstraní otevírání menu plochy běžným levým kliknutím. Přesnost a pohodlnost dotyku po opravě zatím nejsou fyzicky potvrzené; parametry tlaku nebyly měněné.
+- Před změnami byla na zařízení vytvořena záloha původní aplikace, konfigurace plochy a případných existujících souborů v `~/.local/state/promich-camera/backups/20261017T132617Z/`. Původní soubor aplikace je zachovaný. Ovladač displeje a model se neměnily.
+- Nasazené zdroje, jednotka, fragmenty konfigurace a postup návratu jsou v `deploy/` a `docs/DISPLEJ.md`. Soukromé snímky kamery a diagnostika nejsou součástí veřejného repozitáře.
 
 ## Pravidlo předání
 

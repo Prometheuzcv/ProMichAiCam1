@@ -6,6 +6,7 @@ import time
 import traceback
 from http.server import BaseHTTPRequestHandler, ThreadingHTTPServer
 from pathlib import Path
+from urllib.parse import urlsplit
 
 import cv2
 from picamera2 import Picamera2
@@ -47,6 +48,39 @@ e.textContent=`${names[d.label]||d.label} · ${Math.round(d.confidence*100)} %`;
 if(!s.detections.length)list.textContent='Žádný objekt nad prahem jistoty 55 %.';
 }catch(e){document.querySelector('#status').textContent='Spojení se obnovuje…'}}
 setInterval(update,1000);update();</script></html>'''
+
+DISPLAY_PAGE = '''<!doctype html><html lang="cs" translate="no"><meta charset="utf-8">
+<meta name="google" content="notranslate">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>ProMichAiCam1 — živý obraz</title><style>
+*{box-sizing:border-box}html,body{width:100%;height:100%;margin:0;overflow:hidden;
+background:#000;color:#fff;cursor:none;font:14px system-ui,sans-serif;touch-action:none}
+#preview{position:absolute;inset:0;width:100%;height:100%;object-fit:contain;user-select:none}
+#notice{position:absolute;inset:0;display:grid;place-items:center;text-align:center;
+padding:30px;background:#101820}#notice[hidden]{display:none}
+#status{position:absolute;right:4px;bottom:3px;border-radius:3px;padding:2px 5px;
+background:#0009;font-size:11px;pointer-events:none}
+</style><img id="preview" alt="Živý obraz s detekcí objektů" draggable="false">
+<div id="notice">Načítám kameru a detekční model…</div><div id="status">Čekám…</div>
+<script>
+const image=document.querySelector('#preview'), notice=document.querySelector('#notice');
+const status=document.querySelector('#status');let reconnect=true,busy=false;
+image.onerror=()=>{reconnect=true};
+document.addEventListener('contextmenu',e=>e.preventDefault());
+document.addEventListener('dragstart',e=>e.preventDefault());
+async function update(){if(busy)return;busy=true;try{
+ const response=await fetch('/status',{cache:'no-store',signal:AbortSignal.timeout(2500)});
+ if(!response.ok)throw new Error('HTTP '+response.status);
+ const s=await response.json();
+ const fresh=s.ready&&s.last_frame&&Date.now()/1000-s.last_frame<5;
+ notice.hidden=!!fresh;
+ if(s.error){notice.textContent='Chyba kamery: '+s.error;status.textContent='Kamera není připravená'}
+ else if(!fresh){notice.textContent='Načítám kameru a detekční model…';status.textContent='Čekám na obraz'}
+ else{status.textContent=`${s.fps.toFixed(1)} sn./s · AI ${s.inference_frames?'aktivní':'čeká'} · ${s.detections.length} objektů`;
+  if(reconnect||!image.getAttribute('src')){reconnect=false;image.src='/stream.mjpg?t='+Date.now()}}
+ }catch(e){notice.hidden=false;notice.textContent='Obnovuji spojení s kamerou…';
+  status.textContent='Čekám na kameru';reconnect=true}finally{busy=false}}
+setInterval(update,1500);update();</script></html>'''
 
 
 def camera_worker():
@@ -136,7 +170,8 @@ class Handler(BaseHTTPRequestHandler):
             super().log_message(fmt, *args)
 
     def do_GET(self):
-        if self.path == '/stream.mjpg':
+        path = urlsplit(self.path).path
+        if path == '/stream.mjpg':
             self.send_response(200)
             self.send_header('Content-Type', 'multipart/x-mixed-replace; boundary=frame')
             self.send_header('Cache-Control', 'no-store')
@@ -157,12 +192,14 @@ class Handler(BaseHTTPRequestHandler):
                 pass
             return
         with condition:
-            if self.path == '/status':
+            if path == '/status':
                 content, mime = json.dumps(state).encode(), 'application/json'
-            elif self.path == '/snapshot.jpg' and frame:
+            elif path == '/snapshot.jpg' and frame:
                 content, mime = frame, 'image/jpeg'
-            elif self.path == '/':
+            elif path == '/':
                 content, mime = PAGE.encode(), 'text/html; charset=utf-8'
+            elif path == '/display':
+                content, mime = DISPLAY_PAGE.encode(), 'text/html; charset=utf-8'
             else:
                 self.send_error(404)
                 return

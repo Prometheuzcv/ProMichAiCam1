@@ -13,4 +13,6 @@ Soubor služby ve veřejném repozitáři má sjednocené konce řádků LF bez 
 
 Kontrolní součty popisují tento výchozí checkpoint. Při budoucí úpravě programu se SHA256 přirozeně změní; rozhodující je historie commitů a aktualizovaný stav projektu.
 
+17. 10. 2026 byl program rozšířen o místní stránku `/display` a podporu query stringu pro obnovování streamu. Nastavení snímání a inference nebylo změněno. Nasazený `app.py` po této úpravě má SHA256 `342a2cb6a7f1082270c5b39d9b2dbaf1975417fd674fd1c0cf081ed7413287d4`; předchozí kopie byla před nasazením zálohovaná na zařízení. Spouštěč displeje má SHA256 `81551ab1168a78abdca61d72896a7e906f579412093e55070116a0aadf68289a`.
+
 Veřejná dokumentace úmyslně vynechává osobní a síťové údaje z lokálního diagnostického předání. Repozitář není úplná záloha disku, operačního systému ani modelových binárek.

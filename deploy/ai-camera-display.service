@@ -1,0 +1,13 @@
+[Unit]
+Description=ProMichAiCam1 fullscreen camera display
+Wants=ai-camera.service
+After=ai-camera.service
+
+[Service]
+Type=simple
+Environment=WAYLAND_DISPLAY=wayland-0
+Environment=XDG_RUNTIME_DIR=%t
+ExecStart=/usr/bin/python3 %h/ai-camera/display-kiosk.py
+Restart=always
+RestartSec=3
+TimeoutStopSec=10

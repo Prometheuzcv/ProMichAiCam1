@@ -15,6 +15,8 @@ AI kamera se Sony IMX500 na Raspberry Pi. Tento repozitář obsahuje zdrojový k
 |---|---|
 | `app.py` | Python aplikace: kamera, inference, detekční rámečky, HTTP náhled |
 | `deploy/ai-camera.service` | Definice uživatelské systemd služby |
+| `deploy/ai-camera-display.service`, `deploy/display-kiosk.py` | Automatický celoobrazovkový náhled na místním displeji |
+| `docs/DISPLEJ.md` | Ovladač displeje, autostart náhledu a oprava kliknutí dotykem |
 | `STAV_PROJEKTU.md` | Poslední ověřený stav a další práce |
 | `AGENTS.md` | Pokyny pro asistenta při navázání |
 | `docs/PRIPOJENI.md` | Připojení přes místní SSH alias bez zveřejnění adres či klíčů |

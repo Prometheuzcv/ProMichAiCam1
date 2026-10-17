@@ -1,0 +1,11 @@
+<!-- Merge these settings into the existing labwc rc.xml; preserve other settings. -->
+<openbox_config xmlns="http://openbox.org/3.4/rc">
+  <touch deviceName="ADS7846 Touchscreen" mapToOutput="SPI-1" mouseEmulation="yes" />
+  <mouse>
+    <default />
+    <context name="Root">
+      <!-- Match Raspberry Pi's stock config: left click must not open the root menu. -->
+      <mousebind button="Left" action="Press" />
+    </context>
+  </mouse>
+</openbox_config>

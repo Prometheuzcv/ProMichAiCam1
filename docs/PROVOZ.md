@@ -27,11 +27,14 @@ Náhled: 960 × 720, RGB888, požadavek 15 FPS, šest bufferů, JPEG kvalita 80.
 ## HTTP cesty
 
 - `/`: HTML náhled.
+- `/display`: celoobrazovkový náhled pro místní displej; bez ovládacích prvků, s obnovováním spojení.
 - `/status`: stav aplikace v JSON.
 - `/snapshot.jpg`: aktuální JPEG, pokud je snímek dostupný.
 - `/stream.mjpg`: MJPEG stream.
 
 Server poslouchá pouze na `127.0.0.1:8080`. Webový server se spouští společně s kamerovým vláknem. Spuštění `app.py` tedy znamená spuštění kamery.
+
+Po přidání místního kiosku přijímají HTTP cesty také query string. Ten slouží k obnovení MJPEG spojení; nemění detekční model ani parametry kamery. Automatické zobrazení po startu popisuje [DISPLEJ.md](DISPLEJ.md).
 
 ## Služba
 
