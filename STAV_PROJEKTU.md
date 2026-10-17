@@ -48,17 +48,18 @@ Nejdřív zkontrolovat aktuální oprávnění, Git stav a dostupnost zařízen�
 
 - V zařízení jsou uložené dva systémové profily známých Wi-Fi sítí, oba s automatickým připojováním. Priorita preferované sítě je 200, záložní 100; příznak ukládání hesla je u obou 0. Hesla ani soukromá konfigurace nejsou součástí repozitáře.
 - Raspberry je nyní připojené k preferované Wi-Fi. Nové SSH spojení na jeho Wi-Fi adresu bylo úspěšně ověřeno z pracovní stanice i ze stálého MiniPC, s jejich samostatnými klíči.
-- Ethernet zůstává připojený. Samostatný test po fyzickém odpojení kabelu, restartu a ztrátě jedné z Wi-Fi sítí dosud neproběhl.
+- Ethernet zůstává připojený. Po restartu kvůli displeji bylo 17. 10. přibližně v 15:20 Europe/Berlin ověřeno opětovné připojení k preferované Wi-Fi. Samostatný test po fyzickém odpojení kabelu a ztrátě jedné z Wi-Fi sítí dosud neproběhl.
 - Připojování k libovolným otevřeným sítím není nastavené. VPN klient na Raspberry a vzdálený přístup přes mobilní hotspot dosud nejsou nastavené ani ověřené.
 - Kamerová služba zůstává neaktivní; kamera nebyla spuštěna.
 
 ## GPIO displej 3,5 palce — diagnostika 17. 10. 2026
 
 - Uživatel připojil displej označený 3.5inch RPi Display, 480 × 320, XPT2046; hlásí bílé podsvícení. Provedení odpovídá rodině MPI3501/ILI9486.
-- Přímá kontrola zjistila vypnuté SPI v device tree a chybějící overlay displeje v bootovací konfiguraci. Labwc má pouze virtuální výstup NOOP; fyzický SPI displej není registrovaný.
-- Systém již obsahuje moduly DRM ILI9486, ADS7846 a overlay piscreen s volbou drm. Připravená lokální oprava přidá dtparam=spi=on a dtoverlay=piscreen,drm,speed=16000000,rotate=0; původní konfiguraci zálohuje a zachová ostatní nastavení.
-- Oprava zatím nebyla zapsána do zařízení: vyžaduje místní zadání hesla pro sudo. Následně je potřeba restart a ověření registrace displeje, skutečného obrazu a dotyku.
-- Po posledním startu zařízení je kamerová služba aktivní, MainPID při kontrole 1347, aktivní od 15:00:20 Europe/Berlin. Diagnostika službu nespouštěla ani nezastavovala; dřívější záznam inactive je historický.
+- Původní diagnostika zjistila vypnuté SPI a chybějící overlay displeje. Tento stav byl opraven.
+- V bootovací konfiguraci je nyní dtparam=spi=on a dtoverlay=piscreen,drm,speed=16000000,rotate=0. Používají se již instalované systémové ovladače; lokální instalační pomocník před zápisem vytváří zálohu pod /var/backups/promich-display/.
+- **Oprava je nasazená a obraz je fyzicky potvrzený uživatelem.** Po startu v 15:11:03 systém při kontrole přibližně v 15:20 Europe/Berlin registruje SPI-1 jako připojený a zapnutý výstup 480 × 320. Labwc zobrazuje plochu na tomto výstupu.
+- Dotykový řadič je registrovaný jako ADS7846 Touchscreen na spi0.1. Fyzická funkce a přesnost dotyku zatím nebyly potvrzené.
+- Kamerová služba po restartu běží, MainPID při kontrole 1376. Diagnostické čtení ji nespouštělo ani nezastavovalo; dřívější záznam inactive je historický.
 
 ## Pravidlo předání
 
