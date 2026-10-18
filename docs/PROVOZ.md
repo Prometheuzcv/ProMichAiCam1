@@ -62,3 +62,11 @@ Ověření bez fyzické kamery: `python3 tests/test_health.py` a `python3 tests/
 `deploy/maintenance.sh` se spouští pouze výslovně a jako root na cílovém zařízení. Zálohuje seznam balíčků a případné existující přepisy čekání na síť. Nastaví `NM_ONLINE_TIMEOUT=120`, zachová profily a priority Wi-Fi a ověří běh čekací služby. Důvodem je doložený přechod z nedostupné přednostní sítě, který trval déle než původních 60 sekund. Tato změna nezrychluje asociaci a sama neověřuje příští boot.
 
 Poté obnoví katalog APT, uloží plán aktualizace a provede `apt-get upgrade` s `--no-remove`; existující lokální konfigurační soubory zachová. Aktualizace není automaticky spuštěná kamerovou službou. Po dokončení je nutné ověřit služby, knihovny a kiosk; případný restart systému se posuzuje zvlášť. Záloha seznamu balíčků není obraz SD karty ani automatický návrat všech aktualizací.
+
+## Zachování důkazů při problémech Wi-Fi
+
+`deploy/enable-network-diagnostics.sh` vyžaduje root a před změnou zálohuje vlastní případné existující přepisy. Zapíná trvalý journald s `SystemMaxUse=64M`, `SystemMaxFileSize=8M`, `SystemKeepFree=512M` a `MaxRetentionSec=7day`. Přepíše distribuční `Storage=volatile`; protokoly tak mohou přežít restart. Při tvrdém odpojení napájení nemusí být úplně poslední záznamy uložené.
+
+Pro NetworkManager zapíná DEBUG pouze v doménách CORE, DEVICE, WIFI, SUPPLICANT, IP4 a DHCP4, za běhu i pro následující start. Nespouští síťové připojení znovu ani nemění Wi-Fi profily. Protokoly obsahují soukromé síťové údaje a nesmí se vkládat do veřejného repozitáře. Po vyřešení problému je vhodné podrobnou síťovou úroveň vrátit na INFO; trvalé omezené systémové logování může zůstat.
+
+Po testu lze místně porovnat `journalctl --list-boots`, `journalctl -b -1 -u NetworkManager` a `journalctl -b -k`. Pro intervaly používat `-o short-monotonic`, protože synchronizace hodin po startu může posunout kalendářní čas. Stavové soubory musí rozlišovat obyčejný softwarový restart, fyzické odpojení napájení a pouhé opětovné přihlášení přes SSH.
