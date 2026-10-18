@@ -15,9 +15,9 @@ backup="/var/backups/promich-camera/$(date -u +%Y%m%dT%H%M%SZ)-ap-pin"
 install -d -m 700 "$backup"
 cp -a /etc/netplan "$backup/"
 cp -a /etc/NetworkManager/system-connections "$backup/"
-nmcli -g 802-11-wireless.bssid connection show "$profile" > "$backup/previous-bssid"
+nmcli --escape no -g 802-11-wireless.bssid connection show "$profile" > "$backup/previous-bssid"
 nmcli connection modify "$profile" 802-11-wireless.bssid "$bssid"
-test "$(nmcli -g 802-11-wireless.bssid connection show "$profile")" = "$bssid"
+test "$(nmcli --escape no -g 802-11-wireless.bssid connection show "$profile")" = "$bssid"
 # NetworkManager's Netplan backend must have persisted the pin, not just
 # changed the in-memory connection or its generated file under /run.
 python3 - "$bssid" <<'PY'
