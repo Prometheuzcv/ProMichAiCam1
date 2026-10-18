@@ -1,6 +1,10 @@
 # Stav projektu ProMichAiCam1
 
-## Nejnovější práce — 18. 10. 2026, přibližně 07:10 Europe/Prague
+## Nejnovější práce — 18. 10. 2026, diagnostika po 07:15 Europe/Prague
+
+- **Příčina reprodukovaného výpadku Wi-Fi je doložená trvalým journalem.** Běžný softwarový restart se dokončil a vznikl nový boot; kamera podle uživatele dále zobrazovala živý obraz. Raspberry se dvakrát pokusilo připojit ke stejnému přístupovému bodu domácího SSID. Oba pokusy selhaly během čtyřcestného WPA handshake (`WRONG_KEY`). NetworkManager následně čekal na nové heslo, po 120 sekundách skončil s `no-secrets` a výslovně zablokoval profil pro automatické připojení. Přitom uložené tajemství před pokusy existovalo. Nejde tedy o důkaz, že uložené heslo chybělo.
+- Po uživatelově ručním vypnutí a zapnutí bylo obnoveno SSH. Jiný přístupový bod téhož SSID přijal stejné uložené heslo a spojení úspěšně dokončil přibližně 23 sekund od startu. Sken ukázal čtyři body stejného SSID; neúspěšný bod měl vyšší sílu signálu než funkční. Přesná příčina odlišného chování bodů (například rozdíl hesla nebo kompatibilita ověřování) ještě nebyla kontrolou jejich nastavení prokázaná.
+- Připravená cílená oprava `deploy/pin-working-ap.sh` zálohuje soukromou konfiguraci na zařízení a váže domácí profil na aktuálně ověřený funkční BSSID. Nemění heslo, priority sítí ani běžící spojení; ověřuje i uložení do zdrojové konfigurace Netplan. Za cenu odstranění problematického výběru omezuje roaming tohoto profilu na jeden bod. **Nasazení a následný test restartu zatím čekají na místní zadání sudo hesla.** Soukromé BSSID, konfigurace a surové protokoly nejsou v repozitáři.
 
 - Po výslovném potvrzení vypnutí dočasného hotspotu proběhl další řízený softwarový restart, tentokrát po synchronizaci trvalého journalu. Nové SSH spojení se během následné kontroly neobnovilo. Notebook zůstal na domácím přístupovém bodu; kontrola portu SSH v celém místním rozsahu nenašla Raspberry ani na jiné adrese. Na údaj o aktuálním obrazu displeje se čeká. Příčina zůstává otevřená: po obnovení přístupu přečíst předchozí boot a konec vypínání, aby se rozlišil problém restartu od problému připojování Wi-Fi. Dosavadní neúspěch není důkazem konkrétní závady Wi-Fi ovladače.
 

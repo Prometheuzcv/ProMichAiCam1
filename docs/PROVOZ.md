@@ -70,3 +70,13 @@ Poté obnoví katalog APT, uloží plán aktualizace a provede `apt-get upgrade`
 Pro NetworkManager zapíná DEBUG pouze v doménách CORE, DEVICE, WIFI, SUPPLICANT, IP4 a DHCP4, za běhu i pro následující start. Nespouští síťové připojení znovu ani nemění Wi-Fi profily. Protokoly obsahují soukromé síťové údaje a nesmí se vkládat do veřejného repozitáře. Po vyřešení problému je vhodné podrobnou síťovou úroveň vrátit na INFO; trvalé omezené systémové logování může zůstat.
 
 Po testu lze místně porovnat `journalctl --list-boots`, `journalctl -b -1 -u NetworkManager` a `journalctl -b -k`. Pro intervaly používat `-o short-monotonic`, protože synchronizace hodin po startu může posunout kalendářní čas. Stavové soubory musí rozlišovat obyčejný softwarový restart, fyzické odpojení napájení a pouhé opětovné přihlášení přes SSH.
+
+## Stejný název Wi-Fi, různý výsledek ověřování
+
+Při reprodukovaném výpadku 18. 10. byl v journalu doložen sled: asociace ke konkrétnímu BSSID, selhání WPA handshake s `WRONG_KEY`, čekání na nové heslo, `no-secrets` a zablokování automatického připojování profilu. Jiný bod stejného SSID přijal stejné uložené heslo. Samotné hlášení `WRONG_KEY` neprokazuje, že bylo nesprávně uložené heslo; je potřeba porovnat výsledek na jednotlivých bodech a případně jejich skutečné nastavení.
+
+`deploy/pin-working-ap.sh` přijímá jméno aktuálního profilu a jeho ověřený funkční BSSID jako dva místní argumenty. Vyžaduje root, ověřuje hostname i aktuální spojení, zálohuje `/etc/netplan` a `/etc/NetworkManager/system-connections` do kořenového adresáře s oprávněním 700 pod `/var/backups/promich-camera/`. Pomocí `nmcli connection modify` nastaví `802-11-wireless.bssid`. Ověří změnu i její trvalý zápis do Netplan; běžící spojení nerestartuje. Výsledek potvrzuje marker `AP_PIN_PERSISTED`. Zálohy obsahují tajné údaje a zůstávají pouze na zařízení.
+
+Vazba na BSSID omezuje domácí profil na jediný bod. Pokud tento bod nebude dostupný, profil se nepřipojí k jinému bodu stejného SSID. Ostatní uložené síťové profily zůstávají beze změny. Toto chování odpovídá [dokumentaci NetworkManageru](https://networkmanager.pages.freedesktop.org/NetworkManager/NetworkManager/nm-settings-nmcli.html). Po opravě je nutné ověřit nový boot ID, skutečně vybraný BSSID, DHCP, nové SSH spojení a čerstvý obraz i inference.
+
+Pro návrat použít jako root `nmcli connection modify '<místní profil>' 802-11-wireless.bssid ''`, pokud byl původní BSSID prázdný; jinak obnovit hodnotu uloženou v `previous-bssid` v záloze. Poté ověřit trvalé uložení a provést samostatně sledovaný restart. Plné zálohy se nemají slepě přepisovat přes novější nesouvisející změny sítě.
