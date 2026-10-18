@@ -1,5 +1,17 @@
 # Stav projektu ProMichAiCam1
 
+## Nejnovější práce — 18. 10. 2026, přibližně 06:25 Europe/Prague
+
+- Před úpravou kamera i kiosk běžely přes 12 hodin bez automatického restartu. Krátký přímý test potvrdil 15 obrazových a inference výsledků za sekundu, bez chyby, s velkou rezervou RAM a CPU. Napájení nehlásilo podpětí ani throttling; teplota byla přibližně 49 °C. Wi-Fi byla připojená, Ethernet fyzicky odpojený.
+- Nasazený dohled kamery obnovuje proces po výjimce nebo zastavení přibývání snímků/inferencí; systemd omezuje opakované starty. Před nasazením vznikla a kontrolním součtem byla ověřena záloha původního `app.py` a jednotky v `~/.local/state/promich-camera/backups/20261018-recovery/`.
+- Aktualizované zdroje prošly HTTP a pěti zdravotními testy na notebooku i na Raspberry, včetně subprocessu se simulovanou chybou senzoru. Po nasazení se kamera připravila. Následné řízené ukončení hlavního procesu signálem SIGKILL ověřilo automatický restart systemd a obnovení čerstvých snímků i inference přibližně při 15 FPS. Kiosk při tomto testu zůstal běžet se stejným PID. Čítač `NRestarts=1` odpovídal tomuto úmyslnému testu. Skutečné zamrznutí ovladače ani studený boot nebyly vyvolané.
+- `/status` nyní hlásí krátkodobé FPS, stáří obrazu a inference a skutečnou čerstvost AI. Načtení nové verze stavového řádku na fyzickém displeji se ověřuje zvlášť.
+- Příčina chyby `NetworkManager-wait-online` je doložená logem: pokus připojit nedostupnou přednostní síť skončil až po limitu 60 sekund a následovalo úspěšné připojení k záložní síti. Připravený údržbový skript zvyšuje čekací limit na 120 sekund; priority obou sítí ponechává. Nedokazuje rychlejší připojení.
+- **Systémová údržba zatím čeká na místní sudo autorizaci.** Skript `deploy/maintenance.sh` je připravený a syntakticky ověřený. V době tohoto záznamu nebyla oprava systémového čekání ani aktualizace balíčků nasazená; dostupný katalog hlásil 73 aktualizací. Úspěch je nutné zapsat teprve podle dokončeného logu a následné kontroly.
+- Lehčí zobrazovač, jiný detekční model, změny přihlášení do grafické relace a odstraňování desktopových služeb nejsou provedené: současná zátěž je nevyžaduje. Fyzická přesnost dotyku, přechod mezi Wi-Fi při vyvolaném výpadku a vzdálená VPN zůstávají samostatnými testy.
+
+Následující oddíly jsou historické checkpointy a nepřepisují novější stav uvedený výše.
+
 Poslední živé ověření připojení, zdroje aplikace a stavu služby: **17. 10. 2026, přibližně 14:44 Europe/Berlin**. Hardware, model a balíčky byly přečteny přibližně ve 14:12 téhož dne. Tento soubor je časový záznam; současný stav zařízení je před další prací potřeba znovu ověřit.
 
 ## Ověřeno přímým čtením zařízení

@@ -1,6 +1,8 @@
 #!/usr/bin/env python3
 """Local IMX500 object detection preview, viewed through an SSH forward."""
 import json
+import os
+from collections import deque
 import threading
 import time
 import traceback
@@ -18,6 +20,60 @@ frame = None
 sequence = 0
 state = dict(ready=False, error=None, fps=0, frames=0, inference_frames=0,
              detections=[], camera='Sony IMX500', model=Path(MODEL).name)
+STARTUP_TIMEOUT = 300  # Cold IMX500 firmware loading can take several minutes.
+FRAME_TIMEOUT = 15
+INFERENCE_TIMEOUT = 30
+FIRST_INFERENCE_TIMEOUT = 60
+started_at = time.monotonic()
+progress = dict(first_frame=None, frame=None, inference=None)
+frame_times = deque()
+inference_times = deque()
+
+
+def failure_reason(now, status, timestamps, started):
+    """Use monotonic time: wall-clock synchronisation must not trigger restarts."""
+    if status.get('error'):
+        return status['error']
+    if timestamps['frame'] is None:
+        return 'Camera startup timed out' if now - started > STARTUP_TIMEOUT else None
+    if now - timestamps['frame'] > FRAME_TIMEOUT:
+        return 'Camera frames stopped'
+    if timestamps['inference'] is None:
+        if now - timestamps['first_frame'] > FIRST_INFERENCE_TIMEOUT:
+            return 'First AI inference timed out'
+    elif now - timestamps['inference'] > INFERENCE_TIMEOUT:
+        return 'AI inference stopped'
+    return None
+
+
+def recent_rate(samples, now):
+    while samples and now - samples[0] > 3:
+        samples.popleft()
+    return round((len(samples) - 1) / (samples[-1] - samples[0]), 2) if len(samples) > 1 else 0
+
+
+def status_snapshot():
+    with condition:
+        now = time.monotonic()
+        result = dict(state)
+        result['detections'] = list(state['detections'])
+        result['frame_age'] = None if progress['frame'] is None else round(now - progress['frame'], 3)
+        result['inference_age'] = None if progress['inference'] is None else round(now - progress['inference'], 3)
+        result['fps'] = recent_rate(frame_times, now)
+        result['inference_fps'] = recent_rate(inference_times, now)
+        result['ai_ready'] = (result['inference_age'] is not None and result['inference_age'] < 5)
+        return result
+
+
+def supervise_camera():
+    while True:
+        with condition:
+            reason = failure_reason(time.monotonic(), state, progress, started_at)
+        if reason:
+            print('Camera supervisor: ' + reason + '; exiting for systemd recovery', flush=True)
+            # Also works when capture_request or camera.close is blocked in another thread.
+            os._exit(1)
+        time.sleep(1)
 
 PAGE = '''<!doctype html><html lang="cs"><meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
@@ -76,7 +132,7 @@ async function update(){if(busy)return;busy=true;try{
  notice.hidden=!!fresh;
  if(s.error){notice.textContent='Chyba kamery: '+s.error;status.textContent='Kamera není připravená'}
  else if(!fresh){notice.textContent='Načítám kameru a detekční model…';status.textContent='Čekám na obraz'}
- else{status.textContent=`${s.fps.toFixed(1)} sn./s · AI ${s.inference_frames?'aktivní':'čeká'} · ${s.detections.length} objektů`;
+ else{status.textContent=`${s.fps.toFixed(1)} sn./s · AI ${s.ai_ready?'aktivní':'čeká'} · ${s.detections.length} objektů`;
   if(reconnect||!image.getAttribute('src')){reconnect=false;image.src='/stream.mjpg?t='+Date.now()}}
  }catch(e){notice.hidden=false;notice.textContent='Obnovuji spojení s kamerou…';
   status.textContent='Čekám na kameru';reconnect=true}finally{busy=false}}
@@ -133,6 +189,9 @@ def camera_worker():
                     last_ai_time = time.monotonic()
                     with condition:
                         state['inference_frames'] += 1
+                        progress['inference'] = last_ai_time
+                        inference_times.append(last_ai_time)
+                        recent_rate(inference_times, last_ai_time)
                 detections = previous if time.monotonic() - last_ai_time < 1.5 else []
                 for item in detections:
                     x, y, w, h = item['box']
@@ -147,9 +206,14 @@ def camera_worker():
                     raise RuntimeError('JPEG encoder failed')
                 count += 1
                 with condition:
+                    now = time.monotonic()
+                    if progress['first_frame'] is None:
+                        progress['first_frame'] = now
+                    progress['frame'] = now
+                    frame_times.append(now)
                     frame = encoded.tobytes()
                     sequence += 1
-                    state.update(ready=True, frames=count, fps=round(count/(time.monotonic()-start), 2),
+                    state.update(ready=True, frames=count, fps=recent_rate(frame_times, now),
                                  detections=detections, last_frame=time.time())
                     condition.notify_all()
             finally:
@@ -193,7 +257,7 @@ class Handler(BaseHTTPRequestHandler):
             return
         with condition:
             if path == '/status':
-                content, mime = json.dumps(state).encode(), 'application/json'
+                content, mime = json.dumps(status_snapshot()).encode(), 'application/json'
             elif path == '/snapshot.jpg' and frame:
                 content, mime = frame, 'image/jpeg'
             elif path == '/':
@@ -213,5 +277,6 @@ class Handler(BaseHTTPRequestHandler):
 
 if __name__ == '__main__':
     threading.Thread(target=camera_worker, daemon=True).start()
+    threading.Thread(target=supervise_camera, daemon=True).start()
     print('Preview listening on 127.0.0.1:8080', flush=True)
     ThreadingHTTPServer(('127.0.0.1', 8080), Handler).serve_forever()
