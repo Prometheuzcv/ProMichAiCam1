@@ -4,6 +4,8 @@ AI kamera se Sony IMX500 na Raspberry Pi. Tento repozitář obsahuje zdrojový k
 
 ## Začni zde
 
+Pro pokračování z jiného počítače použij [předání z 18. 10. 2026](docs/PREDANI-2026-10-18.md). Popis aktuálního kamerového softwaru a dalších možností je v [MOZNOSTI_AI.md](docs/MOZNOSTI_AI.md).
+
 1. Přečti [STAV_PROJEKTU.md](STAV_PROJEKTU.md): datum posledního ověření, skutečný stav a zbývající práce.
 2. Přečti [AGENTS.md](AGENTS.md): pravidla práce a aktualizace předání.
 3. Pro práci se zařízením použij [návod k připojení](docs/PRIPOJENI.md). Schválený počítač potřebuje vlastní přístup do příslušné sítě a SSH autorizaci.

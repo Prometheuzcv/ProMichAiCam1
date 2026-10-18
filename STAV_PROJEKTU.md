@@ -1,5 +1,11 @@
 # Stav projektu ProMichAiCam1
 
+## Předání — 18. 10. 2026, přibližně 07:45 Europe/Prague
+
+- Aktuální technický kontext a postup pokračování na dalším počítači je v `docs/PREDANI-2026-10-18.md`. Rozsah nasazeného detekčního softwaru, využití IMX500 a další možnosti jsou v `docs/MOZNOSTI_AI.md`. Tyto dokumenty rozlišují hotové funkce od možností dalšího vývoje.
+- Při poslední přímé SSH kontrole před uložením byly aktivní kamera, náhled i síťový timer; aplikace hlásila ready=true, ai_ready=true, error=null a přibližně 15 snímků i výsledků inference za sekundu. Předání samo neměnilo konfiguraci Raspberry ani nerestartovalo služby.
+- Na žádost uživatele byl vytvořen neměnný sdílený snímek této konverzace s přístupem v pracovním prostoru. Jeho neveřejný odkaz je předaný samostatně; veřejný repozitář obsahuje technický souhrn a zdroje, nikoli úplnou soukromou historii, přístupové údaje nebo SSH klíče.
+
 ## Nejnovější práce — 18. 10. 2026, dohled dvou Wi-Fi sítí
 
 - Na výslovné zadání uživatele je nasazený systémový dohled `promich-wifi-supervisor.timer` a `promich-wifi-supervisor.service`. První kontrola po instalaci skončila `Result=success`, návratovým kódem 0 a prvním uloženým skenem. Timer je povolený pro další starty. Před změnami vznikla záloha `/var/backups/promich-camera/20261018T052846Z-wifi-supervisor/`.
