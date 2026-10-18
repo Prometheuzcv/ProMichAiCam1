@@ -1,0 +1,11 @@
+[Unit]
+Description=Check camera Wi-Fi every minute
+
+[Timer]
+OnBootSec=45s
+OnUnitInactiveSec=60s
+AccuracySec=5s
+Unit=promich-wifi-supervisor.service
+
+[Install]
+WantedBy=timers.target
