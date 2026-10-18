@@ -14,6 +14,8 @@ Zdrojový program je `app.py`. Při aktuálně zjištěném uspořádání je na
 
 Jde o balíčky instalované v tehdejším systému zařízení; tento seznam není tvrzením o aktuálních nejnovějších verzích ani samostatným instalačním skriptem. Picamera2 a IMX500 potřebují kompatibilní systémové knihovny a hardware.
 
+Při údržbě 18. 10. 2026 byla Picamera2 aktualizovaná na `0.3.38-1` a Chromium na `1:155.0.8059.39-1~deb13u1+rpt1`. Po načtení nových knihoven byl znovu ověřen skutečný běh kamery a inference. Detekční model ani nastavení snímání se neměnily. Přesný rozsah aktualizací a ponechané balíčky jsou ve stavovém souboru.
+
 ## Model a parametry
 
 Model očekávaný aplikací:

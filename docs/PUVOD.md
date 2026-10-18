@@ -16,3 +16,5 @@ Kontrolní součty popisují tento výchozí checkpoint. Při budoucí úpravě 
 17. 10. 2026 byl program rozšířen o místní stránku `/display` a podporu query stringu pro obnovování streamu. Nastavení snímání a inference nebylo změněno. Nasazený `app.py` po této úpravě má SHA256 `342a2cb6a7f1082270c5b39d9b2dbaf1975417fd674fd1c0cf081ed7413287d4`; předchozí kopie byla před nasazením zálohovaná na zařízení. Spouštěč displeje má SHA256 `81551ab1168a78abdca61d72896a7e906f579412093e55070116a0aadf68289a`.
 
 Veřejná dokumentace úmyslně vynechává osobní a síťové údaje z lokálního diagnostického předání. Repozitář není úplná záloha disku, operačního systému ani modelových binárek.
+
+18. 10. 2026 byl nasazen dohled kamery a aktuální metriky obrazu/inference. Nasazený `app.py` má SHA256 `48d681ae4bdc36b68d10254d18a08d028ab73130480b66056cc562ac75fcf756`; shoda s pracovní kopií byla přímo ověřena. Předchozí soubor a jednotka zůstaly v záloze `~/.local/state/promich-camera/backups/20261018-recovery/`. Při návratu je nutné obnovit oba soubory, zavolat `systemctl --user daemon-reload` a restartovat kamerovou službu. Historické otisky výše zůstávají záznamem původních etap.
